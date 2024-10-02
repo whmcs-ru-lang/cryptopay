@@ -20,6 +20,8 @@ $status = $data['status'];
 $amountPaid = isset($data['paid_amount']) ? $data['paid_amount'] : null;
 $paidAsset = isset($data['paid_asset']) ? $data['paid_asset'] : null;
 
+logModuleCall('cryptopay', 'callback', $data, '', '', ['invoiceId' => $invoiceId, 'status' => $status]);
+
 if ($status === 'paid') {
     try {
         $invoice = Capsule::table('tblinvoices')->where('id', $invoiceId)->first();
@@ -40,6 +42,7 @@ if ($status === 'paid') {
             echo 'Invoice not found';
         }
     } catch (Exception $e) {
+        logModuleCall('cryptopay', 'callback_error', $data, $e->getMessage());
         http_response_code(500);
         echo 'Error: ' . $e->getMessage();
     }
@@ -49,6 +52,7 @@ if ($status === 'paid') {
         http_response_code(200);
         echo 'Invoice expired';
     } catch (Exception $e) {
+        logModuleCall('cryptopay', 'callback_error', $data, $e->getMessage());
         http_response_code(500);
         echo 'Error: ' . $e->getMessage();
     }
