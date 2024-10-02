@@ -59,7 +59,7 @@ For support or any questions, create an issue in this repository.
 
 ## URL для обратного вызова (Callback)
 
-Убедитесь, что вы установили URL для обратного вызова в вашем аккаунте CryptoPay:
+Убедитесь, что вы установили URL для обратного вызова:
 
 https://yourdomain.com/modules/gateways/callback/cryptopay.php
 
