@@ -25,6 +25,10 @@ function cryptopay_config()
 
 function cryptopay_link($params)
 {
+    if (empty($params['apiToken'])) {
+        return 'Error: API token is missing.';
+    }
+
     $invoiceId = $params['invoiceid'];
     $amount = $params['amount'];
     $description = "Invoice #" . $invoiceId;
@@ -61,6 +65,13 @@ function cryptopay_link($params)
 
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    
+    if (curl_errno($ch)) {
+        $curlError = curl_error($ch);
+        curl_close($ch);
+        return 'CURL Error: ' . $curlError;
+    }
+
     curl_close($ch);
 
     $result = json_decode($response, true);
